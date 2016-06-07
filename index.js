@@ -1,3 +1,25 @@
+
+
+(function(){
+var  height = window.innerHeight;
+
+var doFunc = function(e) {
+  if (window.innerHeight !== height) {
+    // console.log("Height is changed");
+    height = window.innerHeight
+    window.parent.postMessage('inf-resize:' + height, "*")
+  }else {
+    // console.log("Height is'n changed")
+  }
+}
+
+window.onresize = doFunc;
+
+})();
+
+
+
+
 var React = require('react');
 var ReactDOM = require('react-dom');
 
@@ -62,8 +84,8 @@ var Header = React.createClass({
 var Item = React.createClass({
   render: function() {
     return (
-      <div className="item">
-        <div className="check" onClick = {this.props.callBack}></div>
+      <div className="item" onClick = {this.props.callBack}>
+        <div className="check" ></div>
         <div className="text"> {this.props.text}</div>
       </div>
     );
@@ -83,12 +105,16 @@ var QBox = React.createClass({
 
   onQuizEnd : function () {
       //send user answers to the server
-      console.log(this.state.user_answers);
+      const oReq = new XMLHttpRequest();
+      const url = (arr) => arr.map((v,i)=> "q" + i + "="+v ).join("&")
+      oReq.open("GET", "./stat.n/save?" + url(this.state.user_answers));
+      oReq.send();
   },
 
   render: function() {
 
     if ( this.state.step === 5 ) {
+      this.onQuizEnd();
       return <div className="thank conteiner">
               <div className="text">Спасибо за участие в опросе</div>
             </div>
@@ -100,12 +126,12 @@ var QBox = React.createClass({
       return (
           <Item key={id} text = {text}  callBack = {
             ()=>{
-              let newStep = that.state.step + 1
-              that.setState({step: newStep})
-              that.setState({data: questions[newStep]})
-              //!!TODO
-              // that.setState({: questions[newStep]})
-              // user_answers: [],
+              let newStep = that.state.step + 1;
+              that.state.user_answers.push(id);
+              that.setState({
+                            step: newStep,
+                            data: questions[newStep],
+                          })
             }
           } />
       );
@@ -113,10 +139,10 @@ var QBox = React.createClass({
 
 
     return (
-      <ReactCSSTransitionGroup transitionName="carousel" transitionEnterTimeout={300} transitionLeaveTimeout={300}>
+      <ReactCSSTransitionGroup transitionEnterTimeout ={300} transitionLeaveTimeout = {300} transitionName="animation">
       <div key = {this.state.step} className="conteiner questions">
         <Header title={this.state.data.title}
-                count={this.state.step + 1 + "/6"}/>
+                count={this.state.step + 1 + "/5"}/>
         <div className = "options">
           {itemNodes}
         </div>
