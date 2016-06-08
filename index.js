@@ -14,9 +14,9 @@ var on  = function () {
 var doFunc = function(e) {
   on();
   if (window.innerHeight !== height) {
-    // console.log("Height is changed");
+    console.log("Height is changed", rootElem.clientHeight);
     height = window.innerHeight
-    window.parent.postMessage('inf-resize:' + height, "*")
+    window.parent.postMessage('inf-resize:' + rootElem.clientHeight, "*")
   }else {
     // console.log("Height is'n changed")
   }
@@ -170,5 +170,5 @@ var QBox = React.createClass({
 });
 ReactDOM.render(
   <QBox />,
-  document.getElementById('root')
+  rootElem
 );

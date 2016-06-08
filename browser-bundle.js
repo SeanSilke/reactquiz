@@ -61,9 +61,9 @@
 	  var doFunc = function doFunc(e) {
 	    on();
 	    if (window.innerHeight !== height) {
-	      // console.log("Height is changed");
+	      console.log("Height is changed", rootElem.clientHeight);
 	      height = window.innerHeight;
-	      window.parent.postMessage('inf-resize:' + height, "*");
+	      window.parent.postMessage('inf-resize:' + rootElem.clientHeight, "*");
 	    } else {
 	      // console.log("Height is'n changed")
 	    }
@@ -211,7 +211,7 @@
 	    );
 	  }
 	});
-	ReactDOM.render(React.createElement(QBox, null), document.getElementById('root'));
+	ReactDOM.render(React.createElement(QBox, null), rootElem);
 
 /***/ },
 /* 1 */

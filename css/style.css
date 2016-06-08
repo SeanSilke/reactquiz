@@ -39,7 +39,6 @@ div {
 }
 .conteiner {
   position: relative;
-  height: 290px;
   min-width: 320px;
   max-width: 670px;
 }
