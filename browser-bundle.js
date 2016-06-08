@@ -171,12 +171,16 @@
 	    if (this.state.step === 5) {
 	      this.onQuizEnd();
 	      return React.createElement(
-	        "div",
-	        { className: "thank conteiner" },
+	        ReactCSSTransitionGroup,
+	        { transitionEnterTimeout: 500, transitionLeaveTimeout: 300, transitionName: "example" },
 	        React.createElement(
 	          "div",
-	          { className: "text" },
-	          "Спасибо за участие в опросе"
+	          { key: "end", className: "thank conteiner" },
+	          React.createElement(
+	            "div",
+	            { className: "text" },
+	            "Спасибо за участие в опросе"
+	          )
 	        )
 	      );
 	    }
@@ -196,7 +200,7 @@
 	
 	    return React.createElement(
 	      ReactCSSTransitionGroup,
-	      { transitionEnterTimeout: 300, transitionLeaveTimeout: 300, transitionName: "animation" },
+	      { transitionEnterTimeout: 500, transitionLeaveTimeout: 300, transitionName: "example" },
 	      React.createElement(
 	        "div",
 	        { key: this.state.step, className: "conteiner questions" },
@@ -211,6 +215,7 @@
 	    );
 	  }
 	});
+	
 	ReactDOM.render(React.createElement(QBox, null), rootElem);
 
 /***/ },

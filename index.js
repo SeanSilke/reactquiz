@@ -131,9 +131,13 @@ var QBox = React.createClass({
 
     if ( this.state.step === 5 ) {
       this.onQuizEnd();
-      return (<div className="thank conteiner">
+      return (
+        <ReactCSSTransitionGroup transitionEnterTimeout ={500} transitionLeaveTimeout = {300} transitionName="example">
+            <div key = {"end"} className="thank conteiner">
               <div className="text">Спасибо за участие в опросе</div>
-            </div>)
+            </div>
+        </ReactCSSTransitionGroup>
+          )
     }
 
     let that = this;
@@ -156,18 +160,20 @@ var QBox = React.createClass({
 
 
     return (
-      <ReactCSSTransitionGroup transitionEnterTimeout ={300} transitionLeaveTimeout = {300} transitionName="animation">
-      <div key = {this.state.step} className="conteiner questions">
-        <Header title={this.state.data.title}
-                count={this.state.step + 1 + "/5"}/>
-        <div className = "options">
-          {itemNodes}
-        </div>
-      </div>
+      <ReactCSSTransitionGroup transitionEnterTimeout ={500} transitionLeaveTimeout = {300} transitionName="example">
+            <div key = {this.state.step} className="conteiner questions">
+              <Header title={this.state.data.title}
+                      count={this.state.step + 1 + "/5"}/>
+              <div className = "options">
+                {itemNodes}
+              </div>
+            </div>
       </ReactCSSTransitionGroup>
     );
   }
 });
+
+
 ReactDOM.render(
   <QBox />,
   rootElem

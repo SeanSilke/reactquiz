@@ -49,6 +49,9 @@ div {
   border-bottom: 5px;
   border-style: solid;
   border-color: #456dfb;
+  height: 350px;
+  position: absolute;
+  width: 100%;
 }
 .thank .text {
   font-family: "Helvetica-Bold";
@@ -126,11 +129,8 @@ div {
   color: #000000;
   margin-left: 5px;
 }
-.padding {
-  height: 100px;
-}
 
-.animation-enter {
+/*.animation-enter {
  opacity: 0.01;
  pointer-events: none;
  }
@@ -145,4 +145,25 @@ div {
 }
 .animation-leave.example-leave-active {
   display: none;
+}*/
+
+
+.example-enter {
+  opacity: 0.01;
+}
+
+.example-enter.example-enter-active {
+  opacity: 1;
+  transition: opacity 1000ms ease-in;
+  pointer-events: none;
+}
+
+.example-leave {
+  opacity: 1;
+}
+
+.example-leave.example-leave-active {
+  opacity: 0.01;
+  transition: opacity 300ms ease-in;
+  pointer-events: none;
 }
