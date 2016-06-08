@@ -1,10 +1,37 @@
+@font-face {
+  font-family: "Helvetica";
+  src: url('../fonts/Helvetica-5-Normal.eot');
+  src: url('../fonts/Helvetica-5-Normal.woff2') format('woff2'),
+       url('../fonts/Helvetica-5-Normal.woff') format('woff'),
+       url('../fonts/Helvetica-5-Normal.ttf') format('truetype'),
+       url('../fonts/Helvetica-5-Normal.svg#Helvetica-5-Normal') format('svg'),
+       url('../fonts/Helvetica-5-Normal.eot?#iefix') format('embedded-opentype');
+  font-weight: normal;
+  font-style: normal;
+}
+
+@font-face {
+  font-family: "Helvetica-Bold";
+  src: url('../fonts/Helvetica-7-Bold.eot');
+  src: url('../fonts/Helvetica-7-Bold.woff2') format('woff2'),
+       url('../fonts/Helvetica-7-Bold.woff') format('woff'),
+       url('../fonts/Helvetica-7-Bold.ttf') format('truetype'),
+       url('../fonts/Helvetica-7-Bold.svg#Helvetica-7-Bold') format('svg'),
+       url('../fonts/Helvetica-7-Bold.eot?#iefix') format('embedded-opentype');
+  font-weight: normal;
+  font-style: normal;
+}
+
+
+
+
 body {
   height: auto;
   overflow: auto;
   margin: 0;
   -webkit-font-smoothing: antialiased;
   color: black;
-  min-width: 405px;
+  min-width: 320px;
   background-color: white;
 }
 div {
@@ -13,7 +40,7 @@ div {
 .conteiner {
   position: relative;
   height: 290px;
-  min-width: 405px;
+  min-width: 320px;
   max-width: 670px;
 }
 .thank {
@@ -31,32 +58,37 @@ div {
   top: 50%;
   left: 50%;
   transform: translate(-50%, -50%);
-  min-width: 350px;
+  min-width: 320px;
+  text-align:center;
 }
 .questions {
   border-color: #f2f2f2;
   font-size: 0;
 }
+
 .questions .header .count {
   width: 75px;
-  height: 75px;
+  min-height: 75px;
   background-color: #456dfb;
   font-family: "Helvetica-Bold";
   font-size: 20px;
   line-height: 1.1;
   color: #ffffff;
-  padding: 25px 18px;
+  /*padding: 25px 18px;*/
   position: absolute;
+  text-align: center;
+  vertical-align: middle;
+
 }
 .questions .header .title {
   background-color: #f2f2f2;
-  height: 75px;
+  min-height: 75px;
   font-family: "Helvetica-Bold";
   font-size: 16px;
   line-height: 1.5;
   color: #000000;
   padding: 15px 15px 15px 95px;
-  min-width: 525px;
+  min-width: 245px;
 }
 .questions .options {
   padding: 0 0 0 15px;

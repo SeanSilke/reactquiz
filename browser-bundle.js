@@ -44,12 +44,22 @@
 /* 0 */
 /***/ function(module, exports, __webpack_require__) {
 
-	'use strict';
+	"use strict";
+	
+	var rootElem = document.getElementById('root');
 	
 	(function () {
 	  var height = window.innerHeight;
 	
+	  var on = function on() {
+	    var count = document.querySelector(".questions .header .count");
+	    var title = document.querySelector(".questions .header .title");
+	    count.style.height = title.clientHeight;
+	    count.style.lineHeight = title.clientHeight + "px";
+	  };
+	
 	  var doFunc = function doFunc(e) {
+	    on();
 	    if (window.innerHeight !== height) {
 	      // console.log("Height is changed");
 	      height = window.innerHeight;
@@ -85,40 +95,47 @@
 	}];
 	
 	var Header = React.createClass({
-	  displayName: 'Header',
+	  displayName: "Header",
 	
+	
+	  componentDidMount: function componentDidMount() {
+	    var count = document.querySelector(".questions .header .count");
+	    var title = document.querySelector(".questions .header .title");
+	    count.style.height = title.clientHeight;
+	    count.style.lineHeight = title.clientHeight + "px";
+	  },
 	  render: function render() {
 	    return React.createElement(
-	      'div',
-	      { className: 'header' },
+	      "div",
+	      { className: "header" },
 	      React.createElement(
-	        'div',
-	        { className: 'count' },
+	        "div",
+	        { className: "count" },
 	        this.props.count
 	      ),
 	      React.createElement(
-	        'div',
-	        { className: 'title' },
-	        ' ',
+	        "div",
+	        { className: "title" },
+	        " ",
 	        this.props.title,
-	        ' '
+	        " "
 	      )
 	    );
 	  }
 	});
 	
 	var Item = React.createClass({
-	  displayName: 'Item',
+	  displayName: "Item",
 	
 	  render: function render() {
 	    return React.createElement(
-	      'div',
-	      { className: 'item', onClick: this.props.callBack },
-	      React.createElement('div', { className: 'check' }),
+	      "div",
+	      { className: "item", onClick: this.props.callBack },
+	      React.createElement("div", { className: "check" }),
 	      React.createElement(
-	        'div',
-	        { className: 'text' },
-	        ' ',
+	        "div",
+	        { className: "text" },
+	        " ",
 	        this.props.text
 	      )
 	    );
@@ -126,7 +143,7 @@
 	});
 	
 	var QBox = React.createClass({
-	  displayName: 'QBox',
+	  displayName: "QBox",
 	
 	
 	  getInitialState: function getInitialState() {
@@ -154,12 +171,12 @@
 	    if (this.state.step === 5) {
 	      this.onQuizEnd();
 	      return React.createElement(
-	        'div',
-	        { className: 'thank conteiner' },
+	        "div",
+	        { className: "thank conteiner" },
 	        React.createElement(
-	          'div',
-	          { className: 'text' },
-	          'Спасибо за участие в опросе'
+	          "div",
+	          { className: "text" },
+	          "Спасибо за участие в опросе"
 	        )
 	      );
 	    }
@@ -179,15 +196,15 @@
 	
 	    return React.createElement(
 	      ReactCSSTransitionGroup,
-	      { transitionEnterTimeout: 300, transitionLeaveTimeout: 300, transitionName: 'animation' },
+	      { transitionEnterTimeout: 300, transitionLeaveTimeout: 300, transitionName: "animation" },
 	      React.createElement(
-	        'div',
-	        { key: this.state.step, className: 'conteiner questions' },
+	        "div",
+	        { key: this.state.step, className: "conteiner questions" },
 	        React.createElement(Header, { title: this.state.data.title,
 	          count: this.state.step + 1 + "/5" }),
 	        React.createElement(
-	          'div',
-	          { className: 'options' },
+	          "div",
+	          { className: "options" },
 	          itemNodes
 	        )
 	      )

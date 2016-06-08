@@ -1,9 +1,18 @@
 
+var rootElem =  document.getElementById('root');
 
 (function(){
 var  height = window.innerHeight;
 
+var on  = function () {
+  var count = document.querySelector(".questions .header .count");
+  var title = document.querySelector(".questions .header .title");
+  count.style.height = title.clientHeight;
+  count.style.lineHeight = title.clientHeight + "px";
+}
+
 var doFunc = function(e) {
+  on();
   if (window.innerHeight !== height) {
     // console.log("Height is changed");
     height = window.innerHeight
@@ -71,6 +80,13 @@ let   questions = [
 
 
 var Header = React.createClass({
+
+  componentDidMount: function() {
+    var count = document.querySelector(".questions .header .count");
+    var title = document.querySelector(".questions .header .title");
+    count.style.height = title.clientHeight;
+    count.style.lineHeight = title.clientHeight + "px";
+  },
   render: function() {
     return (
       <div className="header">
@@ -115,9 +131,9 @@ var QBox = React.createClass({
 
     if ( this.state.step === 5 ) {
       this.onQuizEnd();
-      return <div className="thank conteiner">
+      return (<div className="thank conteiner">
               <div className="text">Спасибо за участие в опросе</div>
-            </div>
+            </div>)
     }
 
     let that = this;
@@ -136,6 +152,7 @@ var QBox = React.createClass({
           } />
       );
     });
+
 
 
     return (
