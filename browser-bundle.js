@@ -47,7 +47,12 @@
 	'use strict';
 	
 	var rootElem = document.getElementById('root');
-	window.parent.postMessage('inf-resize:' + 300, "*")(function () {
+	
+	if (window.parent && window.parent.postMessage) {
+	  window.parent.postMessage('inf-resize:' + 300, "*");
+	}
+	
+	(function () {
 	  var height = window.innerHeight;
 	
 	  var on = function on() {
