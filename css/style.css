@@ -1,30 +1,3 @@
-@font-face {
-  font-family: "Helvetica";
-  src: url('../fonts/Helvetica-5-Normal.eot');
-  src: url('../fonts/Helvetica-5-Normal.woff2') format('woff2'),
-       url('../fonts/Helvetica-5-Normal.woff') format('woff'),
-       url('../fonts/Helvetica-5-Normal.ttf') format('truetype'),
-       url('../fonts/Helvetica-5-Normal.svg#Helvetica-5-Normal') format('svg'),
-       url('../fonts/Helvetica-5-Normal.eot?#iefix') format('embedded-opentype');
-  font-weight: normal;
-  font-style: normal;
-}
-
-@font-face {
-  font-family: "Helvetica-Bold";
-  src: url('../fonts/Helvetica-7-Bold.eot');
-  src: url('../fonts/Helvetica-7-Bold.woff2') format('woff2'),
-       url('../fonts/Helvetica-7-Bold.woff') format('woff'),
-       url('../fonts/Helvetica-7-Bold.ttf') format('truetype'),
-       url('../fonts/Helvetica-7-Bold.svg#Helvetica-7-Bold') format('svg'),
-       url('../fonts/Helvetica-7-Bold.eot?#iefix') format('embedded-opentype');
-  font-weight: normal;
-  font-style: normal;
-}
-
-
-
-
 body {
   height: auto;
   overflow: auto;
@@ -55,7 +28,8 @@ div {
   width: 100%;
 }
 .thank .text {
-  font-family: "Helvetica-Bold";
+  font-weight: bold;
+  font-family: Sans-Serif;
   font-size: 24px;
   position: absolute;
   top: 50%;
@@ -73,7 +47,8 @@ div {
   width: 75px;
   min-height: 75px;
   background-color: #456dfb;
-  font-family: "Helvetica-Bold";
+  font-weight: bold;
+  font-family: Sans-Serif;
   font-size: 20px;
   line-height: 1.1;
   color: #ffffff;
@@ -86,7 +61,8 @@ div {
 .questions .header .title {
   background-color: #f2f2f2;
   min-height: 75px;
-  font-family: "Helvetica-Bold";
+  font-weight: bold;
+  font-family: Sans-Serif;
   font-size: 16px;
   line-height: 1.5;
   color: #000000;
