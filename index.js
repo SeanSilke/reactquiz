@@ -51,19 +51,11 @@ let   questions = [
 var Header = React.createClass({
 
   componentDidMount: function() {
-    var conteiner =  document.getElementsByClassName('conteiner')[0]
-    console.log(conteiner.clientHeight);
-
-
-    if (window.parent && window.parent.postMessage){
-    window.parent.postMessage('inf-resize:' + conteiner.clientHeight, "*")
-    }
-
-    this.handleResize();
-     window.addEventListener('resize', this.handleResize);
+    this.changeHeight();
+    window.addEventListener('resize', this.changeHeight);
   },
 
-  handleResize: function() {
+  changeHeight: function() {
     var count = document.querySelector(".questions .header .count");
     var title = document.querySelector(".questions .header .title");
     count.style.height = title.clientHeight;
@@ -103,9 +95,21 @@ var QBox = React.createClass({
   },
 
   componentDidMount: function() {
-    // console.log("QBox componentDidMount")
+    this.sendHeightToParent();
+    window.addEventListener('resize', this.sendHeightToParent());
   },
 
+  componentDidUpdate: function(){
+    this.sendHeightToParent();
+  },
+
+  sendHeightToParent: function(){
+    var conteiner =  document.getElementsByClassName('conteiner')[0]
+    if (window.parent && window.parent.postMessage){
+    window.parent.postMessage('inf-resize:' + conteiner.clientHeight, "*")
+    }
+    console.log(conteiner.clientHeight);
+  },
 
   onQuizEnd : function () {
       //send user answers to the server

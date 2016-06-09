@@ -108,23 +108,6 @@ div {
   margin-left: 5px;
 }
 
-/*.animation-enter {
- opacity: 0.01;
- pointer-events: none;
- }
-.animation-enter.animation-enter-active {
- opacity: 1;
- transition: opacity 1s ease-in;
- pointer-events: none;
- }
-
- .animation-leave {
-  display: none;
-}
-.animation-leave.example-leave-active {
-  display: none;
-}*/
-
 
 .example-enter {
   opacity: 0.01;

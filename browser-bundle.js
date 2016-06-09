@@ -73,18 +73,11 @@
 	
 	
 	  componentDidMount: function componentDidMount() {
-	    var conteiner = document.getElementsByClassName('conteiner')[0];
-	    console.log(conteiner.clientHeight);
-	
-	    if (window.parent && window.parent.postMessage) {
-	      window.parent.postMessage('inf-resize:' + conteiner.clientHeight, "*");
-	    }
-	
-	    this.handleResize();
-	    window.addEventListener('resize', this.handleResize);
+	    this.changeHeight();
+	    window.addEventListener('resize', this.changeHeight);
 	  },
 	
-	  handleResize: function handleResize() {
+	  changeHeight: function changeHeight() {
 	    var count = document.querySelector(".questions .header .count");
 	    var title = document.querySelector(".questions .header .title");
 	    count.style.height = title.clientHeight;
@@ -142,7 +135,20 @@
 	  },
 	
 	  componentDidMount: function componentDidMount() {
-	    // console.log("QBox componentDidMount")
+	    this.sendHeightToParent();
+	    window.addEventListener('resize', this.sendHeightToParent());
+	  },
+	
+	  componentDidUpdate: function componentDidUpdate() {
+	    this.sendHeightToParent();
+	  },
+	
+	  sendHeightToParent: function sendHeightToParent() {
+	    var conteiner = document.getElementsByClassName('conteiner')[0];
+	    if (window.parent && window.parent.postMessage) {
+	      window.parent.postMessage('inf-resize:' + conteiner.clientHeight, "*");
+	    }
+	    console.log(conteiner.clientHeight);
 	  },
 	
 	  onQuizEnd: function onQuizEnd() {
