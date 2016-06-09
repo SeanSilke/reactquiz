@@ -1,38 +1,3 @@
-
-var rootElem =  document.getElementById('root');
-
-if (window.parent && window.parent.postMessage){
-window.parent.postMessage('inf-resize:' +300 , "*")
-}
-
-(function(){
-var  height = window.innerHeight;
-
-var on  = function () {
-  var count = document.querySelector(".questions .header .count");
-  var title = document.querySelector(".questions .header .title");
-  count.style.height = title.clientHeight;
-  count.style.lineHeight = title.clientHeight + "px";
-}
-
-var doFunc = function(e) {
-  on();
-  if (window.innerHeight !== height) {
-    console.log("Height is changed", rootElem.clientHeight);
-    height = window.innerHeight
-    window.parent.postMessage('inf-resize:' + rootElem.clientHeight, "*")
-  }else {
-    // console.log("Height is'n changed")
-  }
-}
-
-window.onresize = doFunc;
-
-})();
-
-
-
-
 var React = require('react');
 var ReactDOM = require('react-dom');
 
@@ -86,7 +51,16 @@ let   questions = [
 var Header = React.createClass({
 
   componentDidMount: function() {
+    var conteiner =  document.getElementsByClassName('conteiner')[0]
+    console.log(conteiner.clientHeight);
+
+
+    if (window.parent && window.parent.postMessage){
+    window.parent.postMessage('inf-resize:' + conteiner.clientHeight, "*")
+    }
+
     this.handleResize();
+     window.addEventListener('resize', this.handleResize);
   },
 
   handleResize: function() {
@@ -127,6 +101,11 @@ var QBox = React.createClass({
       step: 0
     }
   },
+
+  componentDidMount: function() {
+    // console.log("QBox componentDidMount")
+  },
+
 
   onQuizEnd : function () {
       //send user answers to the server
@@ -186,5 +165,5 @@ var QBox = React.createClass({
 
 ReactDOM.render(
   <QBox />,
-  rootElem
+  document.getElementById('root')
 );
