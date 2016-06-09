@@ -82,11 +82,16 @@ let   questions = [
 var Header = React.createClass({
 
   componentDidMount: function() {
+    this.handleResize();
+  },
+
+  handleResize: function() {
     var count = document.querySelector(".questions .header .count");
     var title = document.querySelector(".questions .header .title");
     count.style.height = title.clientHeight;
     count.style.lineHeight = title.clientHeight + "px";
   },
+
   render: function() {
     return (
       <div className="header">
@@ -127,14 +132,15 @@ var QBox = React.createClass({
       oReq.send();
   },
 
+
   render: function() {
 
     if ( this.state.step === 5 ) {
       this.onQuizEnd();
       return (
-        <ReactCSSTransitionGroup transitionEnterTimeout ={500} transitionLeaveTimeout = {300} transitionName="example">
+        <ReactCSSTransitionGroup transitionEnterTimeout ={300} transitionLeaveTimeout = {200} transitionName="example">
             <div key = {"end"} className="thank conteiner">
-              <div className="text">Спасибо за участие в опросе</div>
+              <div className="text">Спасибо за участие в&nbsp;опросе</div>
             </div>
         </ReactCSSTransitionGroup>
           )
@@ -160,7 +166,7 @@ var QBox = React.createClass({
 
 
     return (
-      <ReactCSSTransitionGroup transitionEnterTimeout ={500} transitionLeaveTimeout = {300} transitionName="example">
+      <ReactCSSTransitionGroup transitionEnterTimeout ={300} transitionLeaveTimeout = {200} transitionName="example">
             <div key = {this.state.step} className="conteiner questions">
               <Header title={this.state.data.title}
                       count={this.state.step + 1 + "/5"}/>

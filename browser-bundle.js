@@ -99,11 +99,16 @@
 	
 	
 	  componentDidMount: function componentDidMount() {
+	    this.handleResize();
+	  },
+	
+	  handleResize: function handleResize() {
 	    var count = document.querySelector(".questions .header .count");
 	    var title = document.querySelector(".questions .header .title");
 	    count.style.height = title.clientHeight;
 	    count.style.lineHeight = title.clientHeight + "px";
 	  },
+	
 	  render: function render() {
 	    return React.createElement(
 	      "div",
@@ -172,14 +177,14 @@
 	      this.onQuizEnd();
 	      return React.createElement(
 	        ReactCSSTransitionGroup,
-	        { transitionEnterTimeout: 500, transitionLeaveTimeout: 300, transitionName: "example" },
+	        { transitionEnterTimeout: 300, transitionLeaveTimeout: 200, transitionName: "example" },
 	        React.createElement(
 	          "div",
 	          { key: "end", className: "thank conteiner" },
 	          React.createElement(
 	            "div",
 	            { className: "text" },
-	            "Спасибо за участие в опросе"
+	            "Спасибо за участие в опросе"
 	          )
 	        )
 	      );
@@ -200,7 +205,7 @@
 	
 	    return React.createElement(
 	      ReactCSSTransitionGroup,
-	      { transitionEnterTimeout: 500, transitionLeaveTimeout: 300, transitionName: "example" },
+	      { transitionEnterTimeout: 300, transitionLeaveTimeout: 200, transitionName: "example" },
 	      React.createElement(
 	        "div",
 	        { key: this.state.step, className: "conteiner questions" },
