@@ -1,5 +1,6 @@
 
 var rootElem =  document.getElementById('root');
+window.parent.postMessage('inf-resize:' +300 , "*")
 
 (function(){
 var  height = window.innerHeight;
