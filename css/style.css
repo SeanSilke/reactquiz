@@ -4,7 +4,6 @@ body {
   margin: 0;
   -webkit-font-smoothing: antialiased;
   color: black;
-  min-width: 320px;
   background-color: white;
 }
 div {
@@ -17,6 +16,7 @@ div {
   min-width: 320px;
   max-width: 670px;
   width: 100%;
+  font-family: Sans-Serif;
 }
 .thank {
   border-left: 2px  #f2f2f2;
@@ -28,7 +28,6 @@ div {
 }
 .thank .text {
   font-weight: bold;
-  font-family: Sans-Serif;
   font-size: 24px;
   position: absolute;
   top: 50%;
@@ -52,7 +51,6 @@ div {
   min-height: 75px;
   background-color: #456dfb;
   font-weight: bold;
-  font-family: Sans-Serif;
   font-size: 20px;
   line-height: 1.1;
   color: #ffffff;
@@ -66,7 +64,6 @@ div {
   background-color: #f2f2f2;
   min-height: 75px;
   font-weight: bold;
-  font-family: Sans-Serif;
   font-size: 16px;
   line-height: 1.5;
   color: #000000;
@@ -105,7 +102,6 @@ div {
   display: inline-block;
   vertical-align: top;
   width: 85%;
-  font-family: Sans-Serif;
   font-size: 16px;
   line-height: 1.5;
   color: #000000;
