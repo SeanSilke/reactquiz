@@ -146,9 +146,9 @@
 	  sendHeightToParent: function sendHeightToParent() {
 	    var conteiner = document.getElementsByClassName('conteiner')[0];
 	    if (window.parent && window.parent.postMessage) {
-	      window.parent.postMessage('inf-resize:' + conteiner.clientHeight, "*");
+	      window.parent.postMessage('inf-resize:' + conteiner.offsetHeight, "*");
 	    }
-	    console.log(conteiner.clientHeight);
+	    // console.log(conteiner.offsetHeight);
 	  },
 	
 	  onQuizEnd: function onQuizEnd() {
