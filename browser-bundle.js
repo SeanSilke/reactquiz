@@ -68,13 +68,16 @@
 	  options: ["Алкоголь (в частности пиво).", "Заменят более дешевыми безалкогольными газированными напитками, которые, возможно, будут более низкого качества.", "Возрастет число поддельных и контрафактных напитков.", "Все вышеперечисленное."]
 	}];
 	
-	var Header = React.createClass({
-	  displayName: 'Header',
-	
-	
+	var QElem = React.createClass({
+	  displayName: 'QElem',
 	  componentDidMount: function componentDidMount() {
 	    this.changeHeight();
 	    window.addEventListener('resize', this.changeHeight);
+	  },
+	
+	
+	  componentDidUpdate: function componentDidUpdate() {
+	    this.changeHeight();
 	  },
 	
 	  changeHeight: function changeHeight() {
@@ -83,74 +86,107 @@
 	    count.style.height = title.clientHeight;
 	    count.style.lineHeight = title.clientHeight + "px";
 	  },
-	
 	  render: function render() {
+	    var headerString = this.props.step + 1 + "/" + this.props.total;
+	
 	    return React.createElement(
 	      'div',
-	      { className: 'header' },
+	      { key: this.props.step, className: 'conteiner questions' },
 	      React.createElement(
 	        'div',
-	        { className: 'count' },
-	        this.props.count
+	        { className: 'header' },
+	        React.createElement(
+	          'div',
+	          { className: 'count' },
+	          headerString
+	        ),
+	        React.createElement(
+	          'div',
+	          { className: 'title' },
+	          ' ',
+	          this.props.question.title,
+	          ' '
+	        )
 	      ),
-	      React.createElement(
-	        'div',
-	        { className: 'title' },
-	        ' ',
-	        this.props.title,
-	        ' '
-	      )
+	      this.renderOptions()
 	    );
-	  }
-	});
+	  },
+	  renderOptions: function renderOptions() {
+	    var _this = this;
 	
-	var Item = React.createClass({
-	  displayName: 'Item',
-	
-	  render: function render() {
 	    return React.createElement(
 	      'div',
-	      { className: 'item', onClick: this.props.callBack },
-	      React.createElement('div', { className: 'check' }),
-	      React.createElement(
-	        'div',
-	        { className: 'text' },
-	        ' ',
-	        this.props.text
-	      )
+	      { className: 'options' },
+	      this.props.question.options.map(function (option, index) {
+	        return React.createElement(
+	          'div',
+	          { key: index, className: 'item', onClick: _this.props.callBack.bind(null, index) },
+	          React.createElement('div', { className: 'check' }),
+	          React.createElement(
+	            'div',
+	            { className: 'text' },
+	            option
+	          )
+	        );
+	      })
 	    );
 	  }
 	});
 	
 	var QBox = React.createClass({
 	  displayName: 'QBox',
-	
-	
-	  getInitialState: function getInitialState() {
-	    return {
-	      data: questions[0],
-	      user_answers: [],
-	      step: 0
-	    };
-	  },
-	
-	  componentDidMount: function componentDidMount() {
-	    this.sendHeightToParent();
-	    window.addEventListener('resize', this.sendHeightToParent());
-	  },
-	
-	  componentDidUpdate: function componentDidUpdate() {
-	    this.sendHeightToParent();
-	  },
-	
 	  sendHeightToParent: function sendHeightToParent() {
 	    var conteiner = document.getElementsByClassName('conteiner')[0];
 	    if (window.parent && window.parent.postMessage) {
 	      window.parent.postMessage('inf-resize:' + conteiner.offsetHeight, "*");
 	    }
-	    // console.log(conteiner.offsetHeight);
+	  },
+	  componentDidMount: function componentDidMount() {
+	    this.sendHeightToParent();
+	    window.addEventListener('resize', this.sendHeightToParent());
 	  },
 	
+	
+	  componentDidUpdate: function componentDidUpdate() {
+	    this.sendHeightToParent();
+	  },
+	
+	  render: function render() {
+	    var thanks = React.createElement(
+	      'div',
+	      { key: -1, className: 'thank conteiner' },
+	      React.createElement(
+	        'div',
+	        { className: 'text' },
+	        'Спасибо за участие в опросе'
+	      )
+	    );
+	
+	    return React.createElement(
+	      ReactCSSTransitionGroup,
+	      { transitionEnterTimeout: 300, transitionLeaveTimeout: 200, transitionName: 'example' },
+	      this.state.end ? thanks : React.createElement(QElem, { step: this.state.step,
+	        total: this.state.questions.length,
+	        question: this.state.questions[this.state.step],
+	        callBack: this.answer
+	      })
+	    );
+	  },
+	  answer: function answer(id) {
+	    //!!NEVER mutate this.state directly,
+	    this.state.user_answers.push(id);
+	    this.nextQuestion();
+	  },
+	  nextQuestion: function nextQuestion() {
+	    if (this.state.step === this.state.questions.length - 1) {
+	      this.setState({
+	        end: true
+	      });
+	      this.onQuizEnd();
+	    } else this.setState({
+	      step: this.state.step + 1
+	    });
+	  },
 	  onQuizEnd: function onQuizEnd() {
 	    //send user answers to the server
 	    var oReq = new XMLHttpRequest();
@@ -162,54 +198,13 @@
 	    oReq.open("GET", "./stat.n/save?" + url(this.state.user_answers));
 	    oReq.send();
 	  },
-	
-	  render: function render() {
-	
-	    if (this.state.step === 5) {
-	      this.onQuizEnd();
-	      return React.createElement(
-	        ReactCSSTransitionGroup,
-	        { transitionEnterTimeout: 300, transitionLeaveTimeout: 200, transitionName: 'example' },
-	        React.createElement(
-	          'div',
-	          { key: "end", className: 'thank conteiner' },
-	          React.createElement(
-	            'div',
-	            { className: 'text' },
-	            'Спасибо за участие в опросе'
-	          )
-	        )
-	      );
-	    }
-	
-	    var that = this;
-	
-	    var itemNodes = this.state.data.options.map(function (text, id) {
-	      return React.createElement(Item, { key: id, text: text, callBack: function callBack() {
-	          var newStep = that.state.step + 1;
-	          that.state.user_answers.push(id);
-	          that.setState({
-	            step: newStep,
-	            data: questions[newStep]
-	          });
-	        } });
-	    });
-	
-	    return React.createElement(
-	      ReactCSSTransitionGroup,
-	      { transitionEnterTimeout: 300, transitionLeaveTimeout: 200, transitionName: 'example' },
-	      React.createElement(
-	        'div',
-	        { key: this.state.step, className: 'conteiner questions' },
-	        React.createElement(Header, { title: this.state.data.title,
-	          count: this.state.step + 1 + "/5" }),
-	        React.createElement(
-	          'div',
-	          { className: 'options' },
-	          itemNodes
-	        )
-	      )
-	    );
+	  getInitialState: function getInitialState() {
+	    return {
+	      questions: questions,
+	      step: 0,
+	      user_answers: [],
+	      end: false
+	    };
 	  }
 	});
 	

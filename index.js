@@ -47,124 +47,125 @@ let   questions = [
     },
   ]
 
+var QElem = React.createClass({
 
-var Header = React.createClass({
+    componentDidMount() {
+      this.changeHeight();
+      window.addEventListener('resize', this.changeHeight);
+    },
 
-  componentDidMount: function() {
-    this.changeHeight();
-    window.addEventListener('resize', this.changeHeight);
+    componentDidUpdate: function(){
+      this.changeHeight();
+    },
+
+    changeHeight(){
+      var count = document.querySelector(".questions .header .count");
+      var title = document.querySelector(".questions .header .title");
+      count.style.height = title.clientHeight;
+      count.style.lineHeight = title.clientHeight + "px";
+    },
+
+  render() {
+    let headerString = ((this.props.step + 1) + "/" + (this.props.total))
+
+    return (
+      <div key = {this.props.step} className="conteiner questions">
+            <div className="header">
+              <div className="count">{headerString}</div>
+              <div className="title" > {this.props.question.title} </div>
+            </div>
+            {this.renderOptions()}
+      </div>
+    )
   },
 
-  changeHeight: function() {
-    var count = document.querySelector(".questions .header .count");
-    var title = document.querySelector(".questions .header .title");
-    count.style.height = title.clientHeight;
-    count.style.lineHeight = title.clientHeight + "px";
-  },
-
-  render: function() {
+  renderOptions() {
     return (
-      <div className="header">
-        <div className="count">{this.props.count}</div>
-        <div className="title" > {this.props.title} </div>
-      </div>
-    );
+      <div className = "options">
+      {this.props.question.options.map((option, index) => {
+        return (<div key = {index} className="item" onClick = {this.props.callBack.bind(null,index)} >
+                  <div className="check"></div>
+                  <div className="text">{option}</div>
+                </div>)
+      })}
+      </div>)
   }
-});
-
-var Item = React.createClass({
-  render: function() {
-    return (
-      <div className="item" onClick = {this.props.callBack}>
-        <div className="check" ></div>
-        <div className="text"> {this.props.text}</div>
-      </div>
-    );
-  }
-});
-
+})
 
 var QBox = React.createClass({
 
-  getInitialState: function(){
-  return {
-      data: questions[0],
-      user_answers: [],
-      step: 0
-    }
-  },
+    sendHeightToParent(){
+      var conteiner =  document.getElementsByClassName('conteiner')[0]
+      if (window.parent && window.parent.postMessage){
+      window.parent.postMessage('inf-resize:' + conteiner.offsetHeight, "*")
+      }
+    },
 
-  componentDidMount: function() {
-    this.sendHeightToParent();
-    window.addEventListener('resize', this.sendHeightToParent());
-  },
+    componentDidMount() {
+      this.sendHeightToParent();
+      window.addEventListener('resize', this.sendHeightToParent());
+    },
 
-  componentDidUpdate: function(){
-    this.sendHeightToParent();
-  },
+    componentDidUpdate: function(){
+      this.sendHeightToParent();
+    },
 
-  sendHeightToParent: function(){
-    var conteiner =  document.getElementsByClassName('conteiner')[0]
-    if (window.parent && window.parent.postMessage){
-    window.parent.postMessage('inf-resize:' + conteiner.offsetHeight, "*")
-    }
-    // console.log(conteiner.offsetHeight);
-  },
-
-  onQuizEnd : function () {
-      //send user answers to the server
-      const oReq = new XMLHttpRequest();
-      const url = (arr) => arr.map((v,i)=> "q" + i + "="+v ).join("&")
-      oReq.open("GET", "./stat.n/save?" + url(this.state.user_answers));
-      oReq.send();
-  },
-
-
-  render: function() {
-
-    if ( this.state.step === 5 ) {
-      this.onQuizEnd();
-      return (
-        <ReactCSSTransitionGroup transitionEnterTimeout ={300} transitionLeaveTimeout = {200} transitionName="example">
-            <div key = {"end"} className="thank conteiner">
-              <div className="text">Спасибо за участие в&nbsp;опросе</div>
-            </div>
-        </ReactCSSTransitionGroup>
-          )
-    }
-
-    let that = this;
-
-    var itemNodes = this.state.data.options.map(function(text,id) {
-      return (
-          <Item key={id} text = {text}  callBack = {
-            ()=>{
-              let newStep = that.state.step + 1;
-              that.state.user_answers.push(id);
-              that.setState({
-                            step: newStep,
-                            data: questions[newStep],
-                          })
-            }
-          } />
-      );
-    });
-
-
+  render() {
+    let thanks = (
+      <div key = {-1} className="thank conteiner">
+        <div className="text">Спасибо за участие в&nbsp;опросе</div>
+      </div>
+    )
 
     return (
       <ReactCSSTransitionGroup transitionEnterTimeout ={300} transitionLeaveTimeout = {200} transitionName="example">
-            <div key = {this.state.step} className="conteiner questions">
-              <Header title={this.state.data.title}
-                      count={this.state.step + 1 + "/5"}/>
-              <div className = "options">
-                {itemNodes}
-              </div>
-            </div>
-      </ReactCSSTransitionGroup>
-    );
+            {this.state.end ? thanks :
+                              <QElem step={this.state.step}
+                                     total = {this.state.questions.length}
+                                     question={this.state.questions[this.state.step]}
+                                     callBack={this.answer}
+                              />}
+        </ReactCSSTransitionGroup>
+      )
+  },
+
+  answer(id){
+    //!!NEVER mutate this.state directly,
+    this.state.user_answers.push(id)
+    this.nextQuestion()
+  },
+
+  nextQuestion(){
+    if (this.state.step === this.state.questions.length - 1){
+      this.setState({
+        end: true
+      });
+      this.onQuizEnd();
+    }else (
+      this.setState({
+        step: this.state.step + 1
+      })
+    )
+  },
+
+ onQuizEnd() {
+        //send user answers to the server
+        const oReq = new XMLHttpRequest();
+        const url = (arr) => arr.map((v,i)=> "q" + i + "="+v ).join("&")
+        oReq.open("GET", "./stat.n/save?" + url(this.state.user_answers));
+        oReq.send();
+  },
+
+  getInitialState(){
+    return {
+      questions: questions,
+      step: 0,
+      user_answers: [],
+      end: false
+    }
   }
-});
+
+})
 
 
 ReactDOM.render(
